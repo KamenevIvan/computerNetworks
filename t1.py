@@ -1,0 +1,1 @@
+#this program ping 10 sites and print it to csv
