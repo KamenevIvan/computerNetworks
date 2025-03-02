@@ -18,7 +18,6 @@ showButton = '//*[@id="app"]/div/buyer-location/div/div/div/div[3]/div/div[2]/di
 nextPageButton = '//*[@id="app"]/div/buyer-location/div/div/div/div[3]/div/div[2]/div[3]/div[3]/div[4]/nav/ul/li[9]/a'
 
 
-# Конфигурация Selenium
 def get_driver():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -27,16 +26,13 @@ def get_driver():
     return webdriver.Chrome(options=chrome_options)
 
 
-# Функция парсера
 def parse_avito(url: str):
-    driver = get_driver()  # Используем нашу функцию из предыдущего кода
+    driver = get_driver()
     try:
         driver.get(url)
 
-        # Переносим основные этапы парсинга
         wait = WebDriverWait(driver, 10)
 
-        # --- Обработка фильтров ---
         minPrice = wait.until(EC.presence_of_element_located((By.XPATH, minPriceXPath)))
         driver.execute_script("arguments[0].scrollIntoView();", minPrice)
         for char in "30000":
@@ -50,7 +46,6 @@ def parse_avito(url: str):
 
         driver.find_element(By.XPATH, showButton).click()
 
-        # --- Парсинг страниц ---
         ads_data = []
         for i in range(5):
             ads_block = wait.until(
@@ -93,19 +88,17 @@ def parse_avito(url: str):
                     print(f"Ошибка при обработке объявления: {e}")
                     continue
 
-            # Переход на следующую страницу
             try:
                 next_page = wait.until(
                     EC.presence_of_element_located((By.XPATH, nextPageButton))
                 )
                 driver.execute_script("arguments[0].scrollIntoView();", next_page)
                 next_page.click()
-                time.sleep(2)  # Небольшая пауза для загрузки
+                time.sleep(2)
             except:
                 print("Достигнут конец страниц")
                 break
 
-        # --- Сохранение в БД вместо CSV ---
         db = SessionLocal()
         try:
             for ad in ads_data:
@@ -123,7 +116,6 @@ def parse_avito(url: str):
         driver.quit()
 
 
-# Endpoint для запуска парсера
 @app.get("/parse")
 async def start_parse(url: str, background_tasks: BackgroundTasks):
     if not url.startswith(("http://", "https://")):
@@ -133,7 +125,6 @@ async def start_parse(url: str, background_tasks: BackgroundTasks):
     return {"message": "Парсинг запущен в фоновом режиме"}
 
 
-# Endpoint для получения данных
 @app.get("/ads")
 def get_ads():
     db = SessionLocal()
