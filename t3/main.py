@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import time
 
-SQLALCHEMY_DATABASE_URL = "postgresql://parser_user:1969@localhost/avito_parser"
+SQLALCHEMY_DATABASE_URL = "postgresql://parser_user:password@localhost/avito_parser"
 
 app = FastAPI()
 
