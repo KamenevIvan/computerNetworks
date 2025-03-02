@@ -9,13 +9,15 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+
 class Ad(Base):
     __tablename__ = "ads"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     price = Column(String)
     link = Column(String)
     location = Column(String)
+
 
 Base.metadata.create_all(bind=engine)
