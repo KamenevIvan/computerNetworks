@@ -15,7 +15,7 @@ docker build -t my_fastapi_app .
 docker run -d --name app --network my_network -p 5000:5000 my_fastapi_app
 ````
 
-Теперь, если всё сделано правильно, вам должен быть доступен: http://localhost:5000/docs#/default/get_urls_ads_get
+Теперь, если всё сделано правильно, вам должен быть доступен: http://localhost:5000/docs
 
 ## Использование
 Запрос на добавление url в базу данных:
